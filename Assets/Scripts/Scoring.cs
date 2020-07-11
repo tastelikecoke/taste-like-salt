@@ -23,6 +23,7 @@ public class Scoring : MonoBehaviour
 
     public void Win()
     {
+        DroneSpawner.instance.Restart();
         if(!winState)
         {
             Debug.Log("Activate goal sequence!");

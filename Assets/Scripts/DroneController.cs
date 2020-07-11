@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class DroneController : MonoBehaviour
 {
-    private const float terminalV = 6.0f;
-    private const float maxA = 1.0f;
+    private const float terminalV = 10.0f;
+    private const float maxA = 0.015f;
     private Rigidbody2D rigidbody2d;
     private Vector2 acceleration;
     private int isJammed;
+    private bool isStopped;
+    public bool IsStopped
+    {
+        get { return isStopped; }
+    }
+
     void Awake()
     {
         rigidbody2d = this.GetComponent<Rigidbody2D>();
         isJammed = 0;
     }
+
     void Update()
     {
+        if(isStopped) return;
         if(isJammed <= 0)
             acceleration = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * maxA;
 
@@ -30,10 +38,25 @@ public class DroneController : MonoBehaviour
         Obstacle colliderObstacle = collider.gameObject.GetComponent<Obstacle>();
         if(colliderObstacle != null && colliderObstacle.type == "jam")
         {
-            isJammed += 1;
+            StartCoroutine(Jam());
+        }
+        if(colliderObstacle != null && colliderObstacle.type == "spike")
+        {
+            DroneSpawner.instance.Restart();
         }
     }
     
+    public void Stop(GameObject newDrone)
+    {
+        isStopped = true;
+    }
+    
+    IEnumerator Jam()
+    {
+        yield return null;
+        yield return new WaitForSeconds(0.20f);
+        isJammed += 1;
+    }
     IEnumerator Unjam()
     {
         yield return null;
