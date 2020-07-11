@@ -17,7 +17,7 @@ public class DroneController : MonoBehaviour
     void Update()
     {
         if(!isJammed)
-            acceleration = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * maxA;
+            acceleration = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * maxA;
 
         rigidbody2d.velocity += acceleration;
 
@@ -27,6 +27,13 @@ public class DroneController : MonoBehaviour
 
     void OnTriggerEnter2D (Collider2D collider)
     {
+        StartCoroutine(Jam());
+    }
+    
+    IEnumerator Jam()
+    {
+        yield return null;
+        yield return new WaitForSeconds(0.5f);
         isJammed = true;
     }
 
