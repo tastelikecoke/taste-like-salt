@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class DroneController : MonoBehaviour
 {
-    private const float terminalV = 7.5f;
-    private const float maxA = 0.025f;
+    private const float terminalV = 6.0f;
+    private const float maxA = 1.0f;
     private Rigidbody2D rigidbody2d;
     private Vector2 acceleration;
-    private bool isJammed;
+    private int isJammed;
     void Awake()
     {
         rigidbody2d = this.GetComponent<Rigidbody2D>();
-        isJammed = false;
+        isJammed = 0;
     }
     void Update()
     {
-        if(!isJammed)
-            acceleration = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * maxA;
+        if(isJammed <= 0)
+            acceleration = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * maxA;
 
         rigidbody2d.velocity += acceleration;
 
@@ -27,19 +27,27 @@ public class DroneController : MonoBehaviour
 
     void OnTriggerEnter2D (Collider2D collider)
     {
-        StartCoroutine(Jam());
+        Obstacle colliderObstacle = collider.gameObject.GetComponent<Obstacle>();
+        if(colliderObstacle != null && colliderObstacle.type == "jam")
+        {
+            isJammed += 1;
+        }
     }
     
-    IEnumerator Jam()
+    IEnumerator Unjam()
     {
         yield return null;
-        yield return new WaitForSeconds(0.5f);
-        isJammed = true;
+        yield return new WaitForSeconds(0.10f);
+        isJammed -= 1;
     }
 
     
     void OnTriggerExit2D (Collider2D collider)
     {
-        isJammed = false;
+        Obstacle colliderObstacle = collider.gameObject.GetComponent<Obstacle>();
+        if(colliderObstacle != null && colliderObstacle.type == "jam")
+        {
+            StartCoroutine(Unjam());
+        }
     }
 }
