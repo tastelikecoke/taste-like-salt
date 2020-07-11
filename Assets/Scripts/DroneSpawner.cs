@@ -8,18 +8,9 @@ public class DroneSpawner : MonoBehaviour
     private DroneController originalDrone;
     private DroneController currentDrone;
     private List<DroneController> oldDrones;
-    public static DroneSpawner m_instance;
-    public static DroneSpawner instance
-    {
-        get
-        {
-            if(m_instance == null) m_instance = new DroneSpawner();
-            return m_instance;
-        }
-    }
+    public Vector2 initialVelocity;
     void Awake()
     {
-        m_instance = this;
         oldDrones = new List<DroneController>();
     }
     
@@ -27,6 +18,14 @@ public class DroneSpawner : MonoBehaviour
     {
         originalDrone.gameObject.SetActive(false);
         Restart();
+    }
+    public void Die()
+    {
+        oldDrones.Add(currentDrone);
+        foreach(DroneController controller in oldDrones)
+        {
+            Destroy(controller.gameObject);
+        }
     }
     public void Restart()
     {
@@ -42,8 +41,8 @@ public class DroneSpawner : MonoBehaviour
                 Physics2D.IgnoreCollision(newDrone.GetComponent<Collider2D>(), droneController.gameObject.GetComponent<Collider2D>());
             }
         }
-        
         currentDrone = newDrone.GetComponent<DroneController>();
+        currentDrone.GetComponent<Rigidbody2D>().velocity += initialVelocity;
     }
 
     void Update()

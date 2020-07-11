@@ -8,6 +8,7 @@ public class DroneController : MonoBehaviour
     private const float maxA = 0.015f;
     private Rigidbody2D rigidbody2d;
     private Vector2 acceleration;
+    public Transform droneSprite;
     private int isJammed;
     private bool isStopped;
     public bool IsStopped
@@ -23,12 +24,25 @@ public class DroneController : MonoBehaviour
 
     void Update()
     {
-        if(isStopped) return;
+        if(isStopped)
+        {
+            droneSprite.GetComponent<SpriteRenderer>().color = Color.black;
+            return;
+        }
         if(isJammed <= 0)
+        {
             acceleration = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * maxA;
+            droneSprite.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        else
+        {
+            
+            droneSprite.GetComponent<SpriteRenderer>().color = Color.black;
+        }
 
         rigidbody2d.velocity += acceleration;
 
+        droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 10f);
         rigidbody2d.velocity *= (terminalV - maxA) / terminalV;
         //rigidbody2d.velocity += (rigidbody2d.velocity) * (- rigidbody2d.velocity.magnitude / terminalV);
     }
@@ -42,7 +56,7 @@ public class DroneController : MonoBehaviour
         }
         if(colliderObstacle != null && colliderObstacle.type == "spike")
         {
-            DroneSpawner.instance.Restart();
+            Scoring.instance.CurrentLevel.spawner.Restart();
         }
     }
     
@@ -60,7 +74,6 @@ public class DroneController : MonoBehaviour
     IEnumerator Unjam()
     {
         yield return null;
-        yield return new WaitForSeconds(0.10f);
         isJammed -= 1;
     }
 
