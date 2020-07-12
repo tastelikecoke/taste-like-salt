@@ -5,7 +5,7 @@ using UnityEngine;
 public class DroneSpawner : MonoBehaviour
 {
     [SerializeField]
-    private DroneController originalDrone;
+    private DroneController originalDrone = null;
     private DroneController currentDrone;
     private List<DroneController> oldDrones;
     public Vector2 initialVelocity;

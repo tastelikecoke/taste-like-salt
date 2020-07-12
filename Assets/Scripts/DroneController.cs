@@ -80,6 +80,7 @@ public class DroneController : MonoBehaviour
             droneSprite.GetComponent<SpriteRenderer>().color = spriteColor;
         }
 
+
         rigidbody2d.velocity += acceleration;
         droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 5f);
         rigidbody2d.velocity  *= (terminalV - maxA) / terminalV;

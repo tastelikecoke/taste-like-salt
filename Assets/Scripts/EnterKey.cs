@@ -18,13 +18,17 @@ public class EnterKey : MonoBehaviour
         firstText.gameObject.SetActive(true);
         StartCoroutine(WaitForEnter());
     }
-    void Update()
+    void FixedUpdate()
     {
 
         if(state == 3)
         {
-            credits.transform.position += new Vector3(0.0f, 0.003f, 0.0f);
+            credits.transform.position += new Vector3(0.0f, 0.03f, 0.0f);
         }
+    }
+
+    void Update()
+    {
 
         if(Input.GetKeyDown(KeyCode.Return))
         {
