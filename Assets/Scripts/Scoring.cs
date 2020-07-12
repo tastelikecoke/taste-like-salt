@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Scoring : MonoBehaviour
 {
@@ -44,7 +45,11 @@ public class Scoring : MonoBehaviour
     public void Win()
     {
         levelIndex += 1;
-        if(levelIndex >= levelList.Count) return;
+        if(levelIndex >= levelList.Count)
+        {
+            SceneManager.LoadScene("EndScreen");
+            return;
+        }
         currentLevel.spawner.Die();
         currentLevel.gameObject.SetActive(false);
 
