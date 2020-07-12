@@ -33,7 +33,14 @@ public class EnterKey : MonoBehaviour
             {
                 firstText.gameObject.SetActive(false);
                 secondText.gameObject.SetActive(true);
-
+                
+                int finalDroneCount = PlayerPrefs.GetInt("drones", 1);
+                if(finalDroneCount == 1)
+                {
+                    secondText.text = string.Format("and it only took us {0} drone! Amazing!", finalDroneCount);
+                }
+                else
+                    secondText.text = string.Format("and it only took us {0} drones!", finalDroneCount);
                 StartCoroutine(WaitForEnter());
                 state = 1;
             }

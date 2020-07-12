@@ -373,8 +373,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000091553, y: 134.89993}
-  m_SizeDelta: {x: 525.10846, y: 1433.6528}
+  m_AnchoredPosition: {x: -0, y: -48}
+  m_SizeDelta: {x: 525.10846, y: 2421.0994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &159335864
 MonoBehaviour:
@@ -431,14 +431,25 @@ MonoBehaviour:
 
     Freesound.org
 
-    <details>
+
+    ending music: dominictreis
+
+
+    Music
+    Loop: quetzalcontla
+
+
+    Drone Sfx: simeonradivoev, icarroferre, dododuck
+
+
+    Jammer
+    Sfx: lintphishx, Inspectorj
 
 
 
     Thank you
 
-    for
-    playing!'
+    for playing!'
 --- !u!222 &159335865
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -716,8 +727,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -1562}
-  m_SizeDelta: {x: -989.0217, y: 786.2937}
+  m_AnchoredPosition: {x: 0, y: -1930.8}
+  m_SizeDelta: {x: -989.0217, y: 1523.7888}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1261671297
 MonoBehaviour:
