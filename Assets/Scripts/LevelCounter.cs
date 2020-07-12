@@ -9,5 +9,10 @@ public class LevelCounter : MonoBehaviour
     void Update()
     {
         levelText.text = string.Format("Level {0}", Scoring.instance.levelIndex + 1);
+
+        if(Scoring.instance.levelIndex + 1 == 12)
+        {
+            levelText.text = "Final level";
+        }
     }
 }

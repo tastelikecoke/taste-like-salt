@@ -24,13 +24,21 @@ public class DroneController : MonoBehaviour
         AudioController.instance.isJammed = 0;
     }
 
+    public void SetDeadAlpha(float alpha)
+    {
+        Color droneColor = Color.gray;
+        droneColor.a = alpha;
+        droneSprite.GetComponent<SpriteRenderer>().color = droneColor;
+
+    }
+
     void FixedUpdate()
     {
         if(isStopped)
         {
-            droneSprite.GetComponent<SpriteRenderer>().color = Color.gray;
             droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 5f);
             rigidbody2d.velocity  *= 0.95f;
+            droneDirectioner.gameObject.SetActive(false);
             return;
         }
 
@@ -58,6 +66,11 @@ public class DroneController : MonoBehaviour
             if(Input.GetKey(KeyCode.Space))
             {
                 acceleration *= 2.50f;
+                AudioController.instance.isMovingFast = true;
+            }
+            else
+            {
+                AudioController.instance.isMovingFast = false;
             }
         }
         else

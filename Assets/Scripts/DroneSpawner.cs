@@ -39,10 +39,19 @@ public class DroneSpawner : MonoBehaviour
         {
             currentDrone.Stop(newDrone);
             oldDrones.Add(currentDrone);
+            int fadecount = 0;
+            
             foreach(DroneController droneController in oldDrones)
             {
+                droneController.SetDeadAlpha(Mathf.Clamp(1.0f - oldDrones.Count * 0.09f + fadecount * 0.10f, 0.0f, 1.0f));
                 if(droneController != null)
                     Physics2D.IgnoreCollision(newDrone.GetComponent<Collider2D>(), droneController.gameObject.GetComponent<Collider2D>());
+                fadecount += 1;
+            }
+            if(oldDrones.Count > 10)
+            {
+                Destroy(oldDrones[0].gameObject);
+                oldDrones.RemoveAt(0);
             }
         }
         currentDrone = newDrone.GetComponent<DroneController>();

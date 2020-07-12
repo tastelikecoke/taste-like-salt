@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Scoring : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Scoring : MonoBehaviour
     public List<Level> levelList;
     [HideInInspector]
     public int levelIndex;
+    private int deadDroneCount;
 
     public Level CurrentLevel
     {
@@ -43,8 +45,14 @@ public class Scoring : MonoBehaviour
 
     public void Win()
     {
+        deadDroneCount += currentLevel.spawner.lostDrones;
         levelIndex += 1;
-        if(levelIndex >= levelList.Count) return;
+        if(levelIndex >= levelList.Count)
+        {
+            PlayerPrefs.SetInt("drones", deadDroneCount);
+            SceneManager.LoadScene("EndScreen");
+            return;
+        }
         currentLevel.spawner.Die();
         currentLevel.gameObject.SetActive(false);
 
