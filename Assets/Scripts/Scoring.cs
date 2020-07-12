@@ -5,10 +5,10 @@ using UnityEngine;
 public class Scoring : MonoBehaviour
 {
     public static Scoring m_instance;
-    private bool winState;
     private Level currentLevel;
     public List<Level> levelList;
-    private int levelIndex;
+    [HideInInspector]
+    public int levelIndex;
 
     public Level CurrentLevel
     {
@@ -26,23 +26,30 @@ public class Scoring : MonoBehaviour
 
     void Awake()
     {
+        levelIndex = 0;
         m_instance = this;
     }
 
     void Start()
     {
+        foreach(Level level in levelList)
+        {
+            level.gameObject.SetActive(false);
+        }
         currentLevel = levelList[0];
+        currentLevel.gameObject.SetActive(true);
+        currentLevel.spawner.Initialize();
     }
 
     public void Win()
     {
+        levelIndex += 1;
         if(levelIndex >= levelList.Count) return;
         currentLevel.spawner.Die();
         currentLevel.gameObject.SetActive(false);
 
-        levelIndex += 1;
         currentLevel = levelList[levelIndex];
         currentLevel.gameObject.SetActive(true);
-        currentLevel.spawner.Restart();
+        currentLevel.spawner.Initialize();
     }
 }

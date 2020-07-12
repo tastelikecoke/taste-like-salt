@@ -5,7 +5,7 @@ using UnityEngine;
 public class DroneController : MonoBehaviour
 {
     private const float terminalV = 10.0f;
-    private const float maxA = 0.015f;
+    private const float maxA = 0.25f;
     private Rigidbody2D rigidbody2d;
     private Vector2 acceleration;
     public Transform droneSprite;
@@ -22,17 +22,20 @@ public class DroneController : MonoBehaviour
         isJammed = 0;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if(isStopped)
         {
             droneSprite.GetComponent<SpriteRenderer>().color = Color.black;
+            droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 10f);
+            rigidbody2d.velocity  *= 0.95f;
             return;
         }
         if(isJammed <= 0)
         {
             acceleration = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * maxA;
             droneSprite.GetComponent<SpriteRenderer>().color = Color.white;
+            Debug.Log(acceleration);
         }
         else
         {
@@ -41,9 +44,11 @@ public class DroneController : MonoBehaviour
         }
 
         rigidbody2d.velocity += acceleration;
+        //rigidbody2d.AddForce(acceleration);
+        Debug.Log(acceleration);
 
         droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 10f);
-        rigidbody2d.velocity *= (terminalV - maxA) / terminalV;
+        rigidbody2d.velocity  *= (terminalV - maxA) / terminalV;
         //rigidbody2d.velocity += (rigidbody2d.velocity) * (- rigidbody2d.velocity.magnitude / terminalV);
     }
 

@@ -9,15 +9,17 @@ public class DroneSpawner : MonoBehaviour
     private DroneController currentDrone;
     private List<DroneController> oldDrones;
     public Vector2 initialVelocity;
+    public int lostDrones = 0;
     void Awake()
     {
         oldDrones = new List<DroneController>();
     }
     
-    void Start()
+    public void Initialize()
     {
         originalDrone.gameObject.SetActive(false);
         Restart();
+        lostDrones = 0;
     }
     public void Die()
     {
@@ -43,6 +45,7 @@ public class DroneSpawner : MonoBehaviour
         }
         currentDrone = newDrone.GetComponent<DroneController>();
         currentDrone.GetComponent<Rigidbody2D>().velocity += initialVelocity;
+        lostDrones += 1;
     }
 
     void Update()
