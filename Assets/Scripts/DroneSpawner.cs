@@ -33,6 +33,7 @@ public class DroneSpawner : MonoBehaviour
     {
         GameObject newDrone = Instantiate(originalDrone.gameObject);
         newDrone.SetActive(true);
+        newDrone.transform.SetParent(this.transform);
         newDrone.transform.position = this.transform.position;
         if(currentDrone != null)
         {

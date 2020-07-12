@@ -9,6 +9,7 @@ public class DroneController : MonoBehaviour
     private Rigidbody2D rigidbody2d;
     private Vector2 acceleration;
     public Transform droneSprite;
+    public Transform droneDirectioner;
     private int isJammed;
     private bool isStopped;
     public bool IsStopped
@@ -26,28 +27,47 @@ public class DroneController : MonoBehaviour
     {
         if(isStopped)
         {
-            droneSprite.GetComponent<SpriteRenderer>().color = Color.black;
-            droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 10f);
+            droneSprite.GetComponent<SpriteRenderer>().color = Color.gray;
+            droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 5f);
             rigidbody2d.velocity  *= 0.95f;
             return;
         }
-        if(isJammed <= 0)
+
+        
+        droneSprite.GetComponent<SpriteRenderer>().color = Color.white;
+        if(acceleration.magnitude >= 0.0001)
         {
-            acceleration = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * maxA;
-            droneSprite.GetComponent<SpriteRenderer>().color = Color.white;
-            Debug.Log(acceleration);
+            droneDirectioner.gameObject.SetActive(true);
+            Quaternion rotation = Quaternion.LookRotation(new Vector3(acceleration.x, acceleration.y, 0), Vector3.back);
+            rotation.x = 0;
+            rotation.y = 0;
+            droneDirectioner.localRotation = rotation;
         }
         else
         {
-            
-            droneSprite.GetComponent<SpriteRenderer>().color = Color.black;
+            droneDirectioner.gameObject.SetActive(false);
+        }
+
+        if(isJammed <= 0)
+        {
+            acceleration = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * maxA;
+            if(Input.GetKey(KeyCode.Space))
+            {
+                acceleration *= 2.50f;
+            }
+        }
+        else
+        {
+            Color spriteColor = droneSprite.GetComponent<SpriteRenderer>().color;
+            spriteColor.a = 0.5f;
+            droneSprite.GetComponent<SpriteRenderer>().color = spriteColor;
         }
 
         rigidbody2d.velocity += acceleration;
         //rigidbody2d.AddForce(acceleration);
         Debug.Log(acceleration);
 
-        droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 10f);
+        droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 5f);
         rigidbody2d.velocity  *= (terminalV - maxA) / terminalV;
         //rigidbody2d.velocity += (rigidbody2d.velocity) * (- rigidbody2d.velocity.magnitude / terminalV);
     }
@@ -73,7 +93,7 @@ public class DroneController : MonoBehaviour
     IEnumerator Jam()
     {
         yield return null;
-        yield return new WaitForSeconds(0.20f);
+        yield return new WaitForSeconds(0.10f);
         isJammed += 1;
     }
     IEnumerator Unjam()
