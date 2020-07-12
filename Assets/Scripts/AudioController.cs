@@ -22,6 +22,7 @@ public class AudioController : MonoBehaviour
     public AudioSource fallAudio;
     public AudioSource beepAudio;
     public AudioSource copterAudio;
+    public AudioSource musicAudio;
     public int isJammed = 0;
     public bool isMoving = false;
     public bool isMovingFast = false;
@@ -67,6 +68,16 @@ public class AudioController : MonoBehaviour
             {
                 copterAudio.volume -= 0.007f;
             }
+
+        }
+
+        
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            if(musicAudio.volume == 1.0f)
+                musicAudio.volume = 0.0f;
+            else
+                musicAudio.volume = 1.0f;
 
         }
     }
