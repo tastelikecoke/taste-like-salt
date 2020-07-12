@@ -104,6 +104,7 @@ public class DroneController : MonoBehaviour
     
     public void Stop(GameObject newDrone)
     {
+        this.GetComponent<Animator>().enabled = false;
         isStopped = true;
     }
     
