@@ -66,6 +66,11 @@ public class DroneController : MonoBehaviour
             if(Input.GetKey(KeyCode.Space))
             {
                 acceleration *= 2.50f;
+                AudioController.instance.isMovingFast = true;
+            }
+            else
+            {
+                AudioController.instance.isMovingFast = false;
             }
         }
         else

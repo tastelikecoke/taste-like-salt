@@ -46,7 +46,6 @@ public class Scoring : MonoBehaviour
     public void Win()
     {
         deadDroneCount += currentLevel.spawner.lostDrones;
-        Debug.Log(deadDroneCount);
         levelIndex += 1;
         if(levelIndex >= levelList.Count)
         {

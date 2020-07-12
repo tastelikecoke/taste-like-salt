@@ -24,6 +24,7 @@ public class AudioController : MonoBehaviour
     public AudioSource copterAudio;
     public int isJammed = 0;
     public bool isMoving = false;
+    public bool isMovingFast = false;
     void Update()
     {
         if(isJammed > 0)
@@ -42,11 +43,22 @@ public class AudioController : MonoBehaviour
 
         }
         
-        if(isMoving)
+        if(isMovingFast && isMoving)
         {
-            if(copterAudio.volume < 0.2)
+            if(copterAudio.volume < 0.8)
+            {
+                copterAudio.volume += 0.009f;
+            }
+        }
+        else if(isMoving)
+        {
+            if(copterAudio.volume < 0.4)
             {
                 copterAudio.volume += 0.007f;
+            }
+            if(copterAudio.volume > 0.4)
+            {
+                copterAudio.volume -= 0.007f;
             }
         }
         else
