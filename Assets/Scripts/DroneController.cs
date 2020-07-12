@@ -21,6 +21,7 @@ public class DroneController : MonoBehaviour
     {
         rigidbody2d = this.GetComponent<Rigidbody2D>();
         isJammed = 0;
+        AudioController.instance.isJammed = 0;
     }
 
     void FixedUpdate()
@@ -42,10 +43,13 @@ public class DroneController : MonoBehaviour
             rotation.x = 0;
             rotation.y = 0;
             droneDirectioner.localRotation = rotation;
+            
+            AudioController.instance.isMoving = true;
         }
         else
         {
             droneDirectioner.gameObject.SetActive(false);
+            AudioController.instance.isMoving = false;
         }
 
         if(isJammed <= 0)
@@ -64,9 +68,6 @@ public class DroneController : MonoBehaviour
         }
 
         rigidbody2d.velocity += acceleration;
-        //rigidbody2d.AddForce(acceleration);
-        Debug.Log(acceleration);
-
         droneSprite.transform.localRotation = Quaternion.Euler(new Vector3(rigidbody2d.velocity.y, -rigidbody2d.velocity.x, 0) * 5f);
         rigidbody2d.velocity  *= (terminalV - maxA) / terminalV;
         //rigidbody2d.velocity += (rigidbody2d.velocity) * (- rigidbody2d.velocity.magnitude / terminalV);
@@ -74,6 +75,7 @@ public class DroneController : MonoBehaviour
 
     void OnTriggerEnter2D (Collider2D collider)
     {
+        if(isStopped) return;
         Obstacle colliderObstacle = collider.gameObject.GetComponent<Obstacle>();
         if(colliderObstacle != null && colliderObstacle.type == "jam")
         {
@@ -81,6 +83,7 @@ public class DroneController : MonoBehaviour
         }
         if(colliderObstacle != null && colliderObstacle.type == "spike")
         {
+            AudioController.instance.Fall();
             Scoring.instance.CurrentLevel.spawner.Restart();
         }
     }
@@ -92,19 +95,25 @@ public class DroneController : MonoBehaviour
     
     IEnumerator Jam()
     {
+
         yield return null;
         yield return new WaitForSeconds(0.10f);
+        if(isStopped) yield break;
         isJammed += 1;
+        AudioController.instance.isJammed += 1;
     }
     IEnumerator Unjam()
     {
+        if(isStopped) yield break;
         yield return null;
         isJammed -= 1;
+        AudioController.instance.isJammed -= 1;
     }
 
     
     void OnTriggerExit2D (Collider2D collider)
     {
+        if(isStopped) return;
         Obstacle colliderObstacle = collider.gameObject.GetComponent<Obstacle>();
         if(colliderObstacle != null && colliderObstacle.type == "jam")
         {

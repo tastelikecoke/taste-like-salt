@@ -41,18 +41,21 @@ public class DroneSpawner : MonoBehaviour
             oldDrones.Add(currentDrone);
             foreach(DroneController droneController in oldDrones)
             {
-                Physics2D.IgnoreCollision(newDrone.GetComponent<Collider2D>(), droneController.gameObject.GetComponent<Collider2D>());
+                if(droneController != null)
+                    Physics2D.IgnoreCollision(newDrone.GetComponent<Collider2D>(), droneController.gameObject.GetComponent<Collider2D>());
             }
         }
         currentDrone = newDrone.GetComponent<DroneController>();
         currentDrone.GetComponent<Rigidbody2D>().velocity += initialVelocity;
         lostDrones += 1;
+        AudioController.instance.JustBeep();
     }
 
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.R))
         {
+            AudioController.instance.Fall();
             Restart();
         }
     }
