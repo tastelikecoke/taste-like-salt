@@ -418,13 +418,13 @@ MonoBehaviour:
 
     Art:
 
-    salt
+    half_salt
 
 
     Design:
 
     tastelikecoke
-    and salt
+    and half_salt
 
 
     Sound:

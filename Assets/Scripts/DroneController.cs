@@ -26,7 +26,7 @@ public class DroneController : MonoBehaviour
 
     public void SetDeadAlpha(float alpha)
     {
-        Color droneColor = Color.gray;
+        Color droneColor = new Color(0.09411766f, 0.08627451f, 0.145098f);
         droneColor.a = alpha;
         droneSprite.GetComponent<SpriteRenderer>().color = droneColor;
 
@@ -76,8 +76,7 @@ public class DroneController : MonoBehaviour
         else
         {
             Color spriteColor = droneSprite.GetComponent<SpriteRenderer>().color;
-            spriteColor.a = 0.5f;
-            droneSprite.GetComponent<SpriteRenderer>().color = spriteColor;
+            droneSprite.GetComponent<SpriteRenderer>().color = new Color(227f/256.0f, 78f/256.0f, 41f/256.0f);
         }
 
 
